@@ -12,6 +12,13 @@ global.urlch = ""
 global.status = true
 global.onwer = ""
 
+global.mess = {
+    owner: "[ ! ] no, this is for owners only",
+    group: "[ /\ ] this is for groups only", 
+    private: "[ ^_^ ] this is specifically for private chat", 
+    wait: "[ <> ] Await Mohon Menunggu", 
+    done: "[ <> ] Succes..."
+}
 
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
