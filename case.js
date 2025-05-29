@@ -74,6 +74,85 @@ module.exports = vynnoxbeyours = async (vynnoxbeyours, m, chatUpdate, ciaa, stor
             console.log();
         }
 
+        async function nevreply(text) {
+            vynnoxbeyours.sendMessage(m.chat, {
+                text: text,
+                contextInfo: {
+                    mentionedJid: [sender],
+                    externalAdReply: {
+                        title: "¿? Cannie",
+                        body: "This script was created by VynnoxRzy",
+                        thumbnailUrl: "https://github.com/mp.png",
+                        sourceUrl: 'https://api-cannie.xevenxyyvip.site',
+                        renderLargerThumbnail: false,
+                    }
+                }
+            }, { quoted: m })
+        }
+
+
+        const pluginsLoader = async (directory) => {
+            let plugins = [];
+            const folders = fs.readdirSync(directory);
+            folders.forEach(file => {
+                const filePath = path.join(directory, file);
+                if (filePath.endsWith(".js")) {
+                    try {
+                        const resolvedPath = require.resolve(filePath);
+                        if (require.cache[resolvedPath]) {
+                            delete require.cache[resolvedPath];
+                        }
+                        const plugin = require(filePath);
+                        plugins.push(plugin);
+                    } catch (error) {
+                        console.log(`${filePath}:`, error);
+                    }
+                }
+            });
+            return plugins;
+        };
+
+        const pluginsDisable = true;
+        const plugins = await pluginsLoader(path.resolve(__dirname, "../command"));
+        const plug = { 
+            vynnoxbeyours,
+            prefix,
+            command, 
+            nevreply,
+            text, 
+            itsOwner,
+            isGroup: m.isGroup, 
+            isPrivate: !m.isGroup, 
+            pushname,
+            isAdmins,
+            groupMetadata
+        };
+
+        for (let plugin of plugins) {
+            if (plugin.command.find(e => e == command.toLowerCase())) {
+                if (plugin.owner && !Access) {
+                    return reply(mess.owner);
+                }
+                
+                if (plugin.group && !plug.isGroup) {
+                    return reply(mess.group);
+                }
+                
+                if (plugin.private && !plug.isPrivate) {
+                    return reply(mess.private);
+                }
+                
+                if (plugin.admin && !plug.isAdmins) {
+                    return reply(mess.admin);
+                }
+
+                if (typeof plugin !== "function") return;
+                await plugin(m, plug);
+            }
+        }
+        
+        if (!pluginsDisable) return;
+        
         switch (command) {
             case 'menu': {
                 let botInfo = ``
