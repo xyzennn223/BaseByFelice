@@ -2,7 +2,7 @@ let handler = async (m, { vynnoxbeyours, text, nevreply }) => {
     const quoted = m.quoted ? m.quoted : null;
 
     if (!quoted && text) {
-        NeXura.sendStatusMention(
+        vynnoxbeyours.sendStatusMention(
             { text: text },
             [m.chat]
         );
@@ -19,7 +19,7 @@ let handler = async (m, { vynnoxbeyours, text, nevreply }) => {
 
     if (quoted.mtype === "audioMessage") {
         let audioData = await quoted.download();
-        NeXura.sendStatusMention(
+        vynnoxbeyours.sendStatusMention(
             { audio: audioData, mimetype: 'audio/mp4', ptt: true },
             [m.chat]
         );
@@ -27,7 +27,7 @@ let handler = async (m, { vynnoxbeyours, text, nevreply }) => {
 
     if (quoted.mtype === "imageMessage") {
         let imageData = await quoted.download();
-        NeXura.sendStatusMention(
+        vynnoxbeyours.sendStatusMention(
             { image: imageData, caption: text || '' },
             [m.chat]
         );
@@ -35,7 +35,7 @@ let handler = async (m, { vynnoxbeyours, text, nevreply }) => {
 
     if (quoted.mtype === "videoMessage") {
         let videoData = await quoted.download();
-        NeXura.sendStatusMention(
+        vynnoxbeyours.sendStatusMention(
             { video: videoData, caption: text || '' },
             [m.chat]
         );
