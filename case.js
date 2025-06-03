@@ -43,7 +43,7 @@ module.exports = vynnoxbeyours = async (vynnoxbeyours, m, chatUpdate, ciaa, stor
         const text = q = args.join(" ");
         const from = m.key.remoteJid;
         const isGroup = from.endsWith("@g.us");
-
+        const isAdmins = isGroup ? groupAdmins.includes(m.sender) : false;
         const groupMetadata = isGroup ? await vynnoxbeyours.groupMetadata(m.chat).catch(() => null) : null;
         const groupName = isGroup ? groupMetadata?.subject : "";
         const participants = isGroup ? groupMetadata?.participants : [];
@@ -113,7 +113,7 @@ module.exports = vynnoxbeyours = async (vynnoxbeyours, m, chatUpdate, ciaa, stor
         };
 
         const pluginsDisable = true;
-        const plugins = await pluginsLoader(path.resolve(__dirname, "../command"));
+        const plugins = await pluginsLoader(path.resolve(__dirname, "./command"));
         const plug = { 
             vynnoxbeyours,
             prefix,
@@ -130,7 +130,7 @@ module.exports = vynnoxbeyours = async (vynnoxbeyours, m, chatUpdate, ciaa, stor
 
         for (let plugin of plugins) {
             if (plugin.command.find(e => e == command.toLowerCase())) {
-                if (plugin.owner && !Access) {
+                if (plugin.ongner && !itsOwner) {
                     return reply(mess.owner);
                 }
                 
