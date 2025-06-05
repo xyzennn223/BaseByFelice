@@ -10,7 +10,7 @@ const chalk = require("chalk");
 
 global.urlch = ""
 global.status = true
-global.onwer = ""
+global.onwer = "6282189821436"
 
 global.mess = {
     owner: "[ ! ] no, this is for owners only",
